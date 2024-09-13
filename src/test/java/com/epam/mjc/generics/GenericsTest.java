@@ -16,13 +16,17 @@ public class GenericsTest {
     Generics generics = new Generics();
 
     @Test
-    public void testBoxingMethod() {
-        try {
-            List<?> list = generics.boxingMethod("name");
-        } catch (Exception ex) {
-            throw new Error("Method should compile", ex);
-        }
+public void testBoxingMethod() {
+    try {
+        List<List<String>> list = generics.boxingMethod("name");
+        assertEquals("List size is incorrect", 1, list.size());
+        assertEquals("Nested list size is incorrect", 1, list.get(0).size());
+        assertEquals("Value inside nested list is incorrect", "name", list.get(0).get(0));
+    } catch (Exception ex) {
+        throw new Error("Method should compile", ex);
     }
+}
+
 
     @Test
     public void testBoxingMethodIsNotRaw() {
@@ -54,15 +58,18 @@ public class GenericsTest {
     }
 
     @Test
-    public void testGenericClone() {
-        List<Number> number = new ArrayList<>();
-        List<Integer> integer = Arrays.asList(1, 2);
-        try {
-            generics.cloneMethod(number, integer);
-        } catch (Exception ex) {
-            throw new Error("Clone method failed", ex);
-        }
+public void testGenericClone() {
+    List<Number> number = new ArrayList<>();
+    List<Integer> integer = Arrays.asList(1, 2);
+    try {
+        generics.cloneMethod(number, integer);
+        assertEquals("Size of consumer list is incorrect", 2, number.size());
+        assertTrue("Consumer list should contain 1", number.contains(1));
+        assertTrue("Consumer list should contain 2", number.contains(2));
+    } catch (Exception ex) {
+        throw new Error("Clone method failed", ex);
     }
+}
 
     @Test
     public void testGenericCloneHasIsNotRaw() {
